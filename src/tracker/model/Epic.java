@@ -1,10 +1,12 @@
+package tracker.model;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    ArrayList<Integer> subtasksIds = new ArrayList<>();
+    private ArrayList<Integer> subtasksIds = new ArrayList<>();
 
-    public Epic(int id, String title, String description, Status status) {
-        super(id, title, description, status);
+    public Epic(int id, String title, String description) {
+        super(id, title, description);
     }
 
 
@@ -19,5 +21,11 @@ public class Epic extends Task {
                 '}';
     }
 
+    public ArrayList<Integer> getSubtasksIds() {
+        return subtasksIds;
+    }
 
+    public void cleanSubtaskIds() {
+        subtasksIds.clear();
+    }
 }

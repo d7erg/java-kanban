@@ -1,5 +1,7 @@
+package tracker.model;
+
 public class Subtask extends Task {
-    int epicId;
+    private int epicId;
 
     public Subtask(int epicId, int id, String title, String description, Status status) {
         super(id, title, description, status);
@@ -15,5 +17,9 @@ public class Subtask extends Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    public int getEpicId() {
+        return epicId;
     }
 }
