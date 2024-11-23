@@ -51,7 +51,7 @@ public class TaskManager {
         if (epic.getSubtasksIds().isEmpty()) {
             epic.setStatus(Status.NEW);
         } else {
-            String epicStatus = String.valueOf(Status.IN_PROGRESS);
+            Status epicStatus = Status.IN_PROGRESS;
             int countDone = 0;
             int countNew = 0;
             for (Integer subtaskId : epic.getSubtasksIds()) {
@@ -64,11 +64,11 @@ public class TaskManager {
             }
 
             if (countDone == epic.getSubtasksIds().size()) {
-                epicStatus = String.valueOf(Status.DONE);
+                epicStatus = Status.DONE;
             } else if (countNew == epic.getSubtasksIds().size()) {
-                epicStatus = String.valueOf(Status.NEW);
+                epicStatus = Status.NEW;
             }
-            epic.setStatus(Status.valueOf(epicStatus));
+            epic.setStatus(epicStatus);
         }
     }
 
@@ -141,9 +141,9 @@ public class TaskManager {
         epics.remove(id);
     }
 
-    public void deleteSubtaskById(int id) {
+    public void deleteSubtaskById(Integer id) {
         Epic epic = epics.get(subtasks.get(id).getEpicId());
-        epic.cleanSubtaskIds();
+        epic.getSubtasksIds().remove(id);
         updateEpicStatus(epic.getId());
         subtasks.remove(id);
     }

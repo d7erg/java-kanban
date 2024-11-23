@@ -3,7 +3,7 @@ package tracker.model;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private ArrayList<Integer> subtasksIds = new ArrayList<>();
+    private final ArrayList<Integer> subtasksIds = new ArrayList<>();
 
     public Epic(int id, String title, String description) {
         super(id, title, description);

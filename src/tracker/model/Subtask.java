@@ -1,7 +1,7 @@
 package tracker.model;
 
 public class Subtask extends Task {
-    private int epicId;
+    private final int epicId;
 
     public Subtask(int epicId, int id, String title, String description, Status status) {
         super(id, title, description, status);
