@@ -10,10 +10,12 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if(tasksHistory.size() == MAX_HISTORY_STORAGE) {
-            tasksHistory.removeFirst();
+        if (task != null) {
+            if(tasksHistory.size() == MAX_HISTORY_STORAGE) {
+                tasksHistory.removeFirst();
+            }
+            tasksHistory.add(task);
         }
-        tasksHistory.add(task);
     }
 
     // Получение истории задач

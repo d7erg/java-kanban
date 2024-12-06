@@ -17,6 +17,23 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
+    public void shouldNotBeAddedNullToList() {
+        Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
+        hm.add(null);
+        hm.add(task);
+        assertEquals(1, hm.getHistory().size(), "Значение не совпадают");
+    }
+
+    @Test
+    public void shouldAddTask() {
+        TaskManager tm = Managers.getDefault();
+        Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
+        tm.addTask(task);
+        tm.getTask(2);
+        System.out.println(tm.getHistory());
+    }
+
+    @Test
     public void shouldSavePreviousTaskVersion() {
         TaskManager tm = Managers.getDefault();
         Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
