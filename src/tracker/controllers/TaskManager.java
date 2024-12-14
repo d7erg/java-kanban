@@ -4,18 +4,18 @@ import tracker.model.Epic;
 import tracker.model.Subtask;
 import tracker.model.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
 
     // Получение списка задач
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
-    ArrayList<Subtask> getSubtasks();
+    List<Subtask> getSubtasks();
 
     // Удаление задач
     void deleteTasks();
@@ -32,7 +32,7 @@ public interface TaskManager {
     Subtask getSubtask(int id);
 
     // Получение списка всех подзадач определённого эпика
-    ArrayList<Subtask> getEpicSubtasks(int epicId);
+    List<Subtask> getEpicSubtasks(int epicId);
 
     // создание
     void addTask(Task task);

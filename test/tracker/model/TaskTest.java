@@ -1,6 +1,9 @@
 package tracker.model;
 
 import org.junit.jupiter.api.Test;
+import tracker.controllers.Managers;
+import tracker.controllers.TaskManager;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
@@ -11,4 +14,5 @@ class TaskTest {
         Task task2 = new Task(2,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
         assertEquals(task1.getId(), task2.getId(), "Экземпляры класса Task не равны друг другу");
     }
+
 }

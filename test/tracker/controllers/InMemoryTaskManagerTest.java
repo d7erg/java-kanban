@@ -7,7 +7,7 @@ import tracker.model.Status;
 import tracker.model.Subtask;
 import tracker.model.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +28,7 @@ class InMemoryTaskManagerTest {
         assertNotNull(sameTask, "Задача не найдена");
         assertEquals(task, sameTask, "Задачи не совпадают");
 
-        ArrayList<Task> tasks = tm.getTasks();
+        List<Task> tasks = tm.getTasks();
         assertNotNull(tasks, "Задачи не найдены");
         assertEquals(1, tasks.size(), "Неверное количество задач");
         assertEquals(task, tasks.getFirst(), "Задачи не совпадают");
@@ -53,7 +53,7 @@ class InMemoryTaskManagerTest {
     public void shouldUnchangedFieldsWhenAddTask() {
         Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
         tm.addTask(task);
-        ArrayList<Task> tasks = tm.getTasks();
+        List<Task> tasks = tm.getTasks();
         Task sameTask = tasks.getFirst();
         assertEquals(task.getId(), sameTask.getId(),"ID не совпадает");
         assertEquals(task.getTitle(), sameTask.getTitle(),"Название не совпадает");

@@ -3,10 +3,11 @@ package tracker.controllers;
 import tracker.model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private static final int MAX_HISTORY_STORAGE = 10;
-    private final ArrayList<Task> tasksHistory = new ArrayList<>();
+    private final List<Task> tasksHistory = new ArrayList<>();
 
     @Override
     public void add(Task task) {
@@ -20,7 +21,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     // Получение истории задач
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return new ArrayList<>(tasksHistory);
     }
 }

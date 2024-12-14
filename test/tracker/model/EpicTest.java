@@ -17,7 +17,7 @@ class EpicTest {
     public void beforeEach() {
         tm = Managers.getDefault();
         epic = new Epic(1,"переезд", "смена места жительства");
-        subtask =new Subtask(1,2, "сборка", "упаковать вещи", Status.IN_PROGRESS);
+        subtask = new Subtask(1,2, "сборка", "упаковать вещи", Status.IN_PROGRESS);
         tm.addEpic(epic);
         tm.addSubtask(subtask);
     }
@@ -41,5 +41,4 @@ class EpicTest {
         tm.deleteSubtasks();
         assertEquals(0, epic.getSubtasksIds().size(), "Количество подзадач не совпадает");
     }
-
 }
