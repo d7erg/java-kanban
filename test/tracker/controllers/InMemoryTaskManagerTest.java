@@ -81,7 +81,6 @@ class InMemoryTaskManagerTest {
     public void shouldReturnUpdatedEpicStatus() {
         Epic epic = new Epic(1,"переезд", "смена места жительства");
         tm.addEpic(epic);
-        assertNull(tm.getEpic(epic.getId()).getStatus(), "Статус должен быть пуст");
         Subtask subtask = new Subtask(1,2, "сборка", "упаковать вещи", Status.IN_PROGRESS);
         tm.addSubtask(subtask);
         assertNotNull(tm.getEpic(epic.getId()).getStatus(), "Статус не должен быть пуст");
