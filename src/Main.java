@@ -24,6 +24,7 @@ public class Main {
         tm.getEpic(1);
         tm.getEpic(5);
 
+        System.out.println("Посмотрели 2 эпика");
         printAllTasks(tm);
         System.out.println();
 
@@ -33,16 +34,19 @@ public class Main {
         tm.getSubtask(3);
         tm.getSubtask(4);
 
+        System.out.println("Посмотрели 2 эпика и подзадачи 2 3 4");
         printAllTasks(tm);
         System.out.println();
 
         tm.deleteEpicById(5);
 
+        System.out.println("Удалили эпик 5");
         printAllTasks(tm);
         System.out.println();
 
         tm.deleteEpicById(1);
 
+        System.out.println("Удалили эпик 1");
         printAllTasks(tm);
         System.out.println();
     }
