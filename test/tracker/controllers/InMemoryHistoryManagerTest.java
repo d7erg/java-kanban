@@ -29,29 +29,62 @@ class InMemoryHistoryManagerTest {
         TaskManager tm = Managers.getDefault();
         Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
         tm.addTask(task);
-        tm.getTask(2);
-        System.out.println(tm.getHistory());
+        tm.getTask(1);
+        assertEquals(1, tm.getHistory().size(), "Значение не совпадают");
     }
 
     @Test
-    public void shouldSavePreviousTaskVersion() {
+    public void shouldAddSave20Tasks() {
+        TaskManager tm = Managers.getDefault();
+        for (int i = 1; i <= 20; i++) {
+            tm.addTask(new Task(i,"прогулка", "ходьба в парке", Status.IN_PROGRESS));
+            tm.getTask(i);
+        }
+        assertEquals(20, tm.getHistory().size(), "Количество просмотренных задач не совпадает");
+    }
+
+
+    @Test
+    public void shouldRemoveTask() {
+        TaskManager tm = Managers.getDefault();
+        Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
+        tm.addTask(task);
+        tm.getTask(1);
+        tm.deleteTaskById(1);
+        assertEquals(0, tm.getHistory().size(), "Значение не совпадают");
+    }
+
+    @Test
+    public void shouldReturnViewHistory() {
+        TaskManager tm = Managers.getDefault();
+        Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
+        tm.addTask(task);
+        hm.add(task);
+        assertEquals(1, hm.getHistory().size(), "Количество просмотренных задач должно совпадать");
+    }
+
+    @Test
+    public void shouldNotSavePreviousTaskVersion() {
         TaskManager tm = Managers.getDefault();
         Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
         tm.addTask(task);
         hm.add(task);
         tm.updateTask(new Task(1,"рыбалка", "отдых на природе", Status.DONE));
         hm.add(tm.getTasks().getFirst());
-        assertEquals(2, hm.getHistory().size(), "Количество задач не совпадает");
-        assertNotEquals(hm.getHistory().getFirst().getStatus(),hm.getHistory().getLast().getStatus(),
-                "Статусы не должны совпадать");
+        assertEquals(1, hm.getHistory().size(), "Количество задач не совпадает");
+        assertEquals(hm.getHistory().getFirst().getStatus(),hm.getHistory().getLast().getStatus(),
+                "Статусы должны совпадать");
     }
 
     @Test
-    public void shouldSaveOnly10Tasks() {
+    public void shouldSaveLastViewedTask( ){
+        TaskManager tm = Managers.getDefault();
         Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
-        for (int i = 0; i < 12; i++) {
-            hm.add(task);
-        }
-        assertEquals(10, hm.getHistory().size(), "Количество задач не совпадает");
+        tm.addTask(task);
+        tm.getTask(1);
+        tm.getTask(1);
+        tm.getTask(1);
+        assertEquals(1, tm.getHistory().size(), "Количество просмотренных задач не совпадает");
     }
+
 }

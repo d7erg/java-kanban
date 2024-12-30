@@ -7,34 +7,48 @@ import tracker.model.Task;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Поехали!");
 
         InMemoryTaskManager tm = new InMemoryTaskManager();
-        // Создаем две задачи
-        tm.addTask(new Task(1,"рыбалка", "отдых на природе", Status.NEW));
-        tm.addTask(new Task(2,"прогулка", "ходьба в парке", Status.IN_PROGRESS));
 
         // Создаем эпик с двумя подзадачами
-        tm.addEpic(new Epic(3,"переезд", "смена места жительства"));
-        tm.addSubtask(new Subtask(3,4, "сборка", "упаковать вещи", Status.IN_PROGRESS));
-        tm.addSubtask(new Subtask(3,5,"загрузка", "загрузить вещи в транспорт", Status.IN_PROGRESS));
+        tm.addEpic(new Epic(1,"переезд", "смена места жительства"));
+        tm.addSubtask(new Subtask(1,2, "сборка", "упаковать вещи", Status.IN_PROGRESS));
+        tm.addSubtask(new Subtask(1,3,"загрузка", "загрузить вещи в транспорт",
+                Status.IN_PROGRESS));
+        tm.addSubtask(new Subtask(1,4,"выгрузка", "выгрузить вещи из транспорт",
+                Status.NEW));
 
         // Создаем эпик с одной подзадачей
-        tm.addEpic(new Epic(6,"покупки", "купить еду"));
-        tm.addSubtask(new Subtask(6,7, "список", "написать список покупок", Status.IN_PROGRESS));
+        tm.addEpic(new Epic(5,"покупки", "купить еду"));
 
-        tm.getTask(2);
-        tm.getTask(1);
-        tm.getEpic(3);
-        tm.getSubtask(4);
-        tm.getSubtask(5);
-        tm.getSubtask(4);
-        tm.getEpic(3);
-        tm.getTask(1);
-        tm.getTask(2);
-        tm.getTask(2);
+        tm.getEpic(1);
+        tm.getEpic(5);
 
+        System.out.println("Посмотрели 2 эпика");
         printAllTasks(tm);
+        System.out.println();
+
+        tm.getEpic(1);
+        tm.getEpic(5);
+        tm.getSubtask(2);
+        tm.getSubtask(3);
+        tm.getSubtask(4);
+
+        System.out.println("Посмотрели 2 эпика и подзадачи 2 3 4");
+        printAllTasks(tm);
+        System.out.println();
+
+        tm.deleteEpicById(5);
+
+        System.out.println("Удалили эпик 5");
+        printAllTasks(tm);
+        System.out.println();
+
+        tm.deleteEpicById(1);
+
+        System.out.println("Удалили эпик 1");
+        printAllTasks(tm);
+        System.out.println();
     }
 
     private static void printAllTasks(InMemoryTaskManager manager) {
