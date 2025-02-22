@@ -70,7 +70,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 epic.setStatus(status);
                 return epic;
             case "SUBTASK":
-                return new Subtask(epicId , id, title, description, status);
+                return new Subtask(epicId, id, title, description, status);
             case "TASK":
                 return new Task(id, title, description, status);
             default:
