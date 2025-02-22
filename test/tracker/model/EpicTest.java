@@ -2,6 +2,7 @@ package tracker.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tracker.constants.Status;
 import tracker.controllers.Managers;
 import tracker.controllers.TaskManager;
 

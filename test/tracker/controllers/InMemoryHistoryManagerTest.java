@@ -2,7 +2,7 @@ package tracker.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tracker.model.Status;
+import tracker.constants.Status;
 import tracker.model.Task;
 
 import static org.junit.jupiter.api.Assertions.*;

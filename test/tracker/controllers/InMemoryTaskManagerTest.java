@@ -3,7 +3,7 @@ package tracker.controllers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tracker.model.Epic;
-import tracker.model.Status;
+import tracker.constants.Status;
 import tracker.model.Subtask;
 import tracker.model.Task;
 

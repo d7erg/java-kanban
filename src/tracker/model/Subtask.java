@@ -1,5 +1,7 @@
 package tracker.model;
 
+import tracker.constants.Status;
+
 public class Subtask extends Task {
     private final int epicId;
 

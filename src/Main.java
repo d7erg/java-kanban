@@ -1,14 +1,21 @@
-import tracker.controllers.InMemoryTaskManager;
+import tracker.controllers.FileBackedTaskManager;
+import tracker.controllers.TaskManager;
 import tracker.model.Epic;
-import tracker.model.Status;
+import tracker.constants.Status;
 import tracker.model.Subtask;
 import tracker.model.Task;
 
+import java.io.File;
+import java.io.IOException;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        InMemoryTaskManager tm = new InMemoryTaskManager();
+
+        File file = File.createTempFile("tasks" , ".csv");
+
+        FileBackedTaskManager tm = new FileBackedTaskManager(file);
 
         // Создаем эпик с двумя подзадачами
         tm.addEpic(new Epic(1,"переезд", "смена места жительства"));
@@ -18,40 +25,25 @@ public class Main {
         tm.addSubtask(new Subtask(1,4,"выгрузка", "выгрузить вещи из транспорт",
                 Status.NEW));
 
-        // Создаем эпик с одной подзадачей
+        // Создаем пустой эпик
         tm.addEpic(new Epic(5,"покупки", "купить еду"));
 
-        tm.getEpic(1);
-        tm.getEpic(5);
 
-        System.out.println("Посмотрели 2 эпика");
+        System.out.println("Просмотр");
         printAllTasks(tm);
         System.out.println();
 
-        tm.getEpic(1);
-        tm.getEpic(5);
-        tm.getSubtask(2);
-        tm.getSubtask(3);
-        tm.getSubtask(4);
-
-        System.out.println("Посмотрели 2 эпика и подзадачи 2 3 4");
-        printAllTasks(tm);
+        System.out.println("-----------------------------------------------");
+        System.out.println("Просмотр файла");
         System.out.println();
 
-        tm.deleteEpicById(5);
+        FileBackedTaskManager load = FileBackedTaskManager.loadFromFile(file);
+        printAllTasks(load);
 
-        System.out.println("Удалили эпик 5");
-        printAllTasks(tm);
-        System.out.println();
-
-        tm.deleteEpicById(1);
-
-        System.out.println("Удалили эпик 1");
-        printAllTasks(tm);
-        System.out.println();
+        file.deleteOnExit();
     }
 
-    private static void printAllTasks(InMemoryTaskManager manager) {
+    private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getTasks()) {
             System.out.println(task);

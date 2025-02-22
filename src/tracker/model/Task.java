@@ -1,5 +1,7 @@
 package tracker.model;
 
+import tracker.constants.Status;
+
 import java.util.Objects;
 
 public class Task {
