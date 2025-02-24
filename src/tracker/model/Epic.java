@@ -1,5 +1,7 @@
 package tracker.model;
 
+import tracker.constants.TaskType;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -27,5 +29,10 @@ public class Epic extends Task {
 
     public void cleanSubtaskIds() {
         subtasksIds.clear();
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 }

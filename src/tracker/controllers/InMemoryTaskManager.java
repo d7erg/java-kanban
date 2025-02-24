@@ -3,7 +3,7 @@ package tracker.controllers;
 import tracker.model.Task;
 import tracker.model.Epic;
 import tracker.model.Subtask;
-import tracker.model.Status;
+import tracker.constants.Status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     // обновления статуса эпика
-    private void updateEpicStatus(int id) {
+    protected void updateEpicStatus(int id) {
         Epic epic = epics.get(id);
 
         if (epic.getSubtasksIds().isEmpty()) {

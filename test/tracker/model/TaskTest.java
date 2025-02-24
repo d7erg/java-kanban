@@ -1,7 +1,7 @@
 package tracker.model;
 
 import org.junit.jupiter.api.Test;
-
+import tracker.constants.Status;
 
 import static org.junit.jupiter.api.Assertions.*;
 
