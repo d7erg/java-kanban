@@ -1,6 +1,7 @@
 package tracker.model;
 
 import tracker.constants.Status;
+import tracker.constants.TaskType;
 
 import java.util.Objects;
 
@@ -73,5 +74,9 @@ public class Task {
 
     public String getTitle() {
         return title;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 }

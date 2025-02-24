@@ -17,7 +17,7 @@ public class Main {
 
         FileBackedTaskManager tm = new FileBackedTaskManager(file);
 
-        // Создаем эпик с двумя подзадачами
+        // Создаем эпик с тремя подзадачами
         tm.addEpic(new Epic(1,"переезд", "смена места жительства"));
         tm.addSubtask(new Subtask(1,2, "сборка", "упаковать вещи", Status.IN_PROGRESS));
         tm.addSubtask(new Subtask(1,3,"загрузка", "загрузить вещи в транспорт",

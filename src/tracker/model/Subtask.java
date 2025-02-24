@@ -1,6 +1,7 @@
 package tracker.model;
 
 import tracker.constants.Status;
+import tracker.constants.TaskType;
 
 public class Subtask extends Task {
     private final int epicId;
@@ -23,5 +24,10 @@ public class Subtask extends Task {
 
     public int getEpicId() {
         return epicId;
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.SUBTASK;
     }
 }
