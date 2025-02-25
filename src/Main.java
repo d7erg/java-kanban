@@ -1,7 +1,8 @@
+import tracker.constants.Status;
 import tracker.controllers.FileBackedTaskManager;
+import tracker.controllers.Managers;
 import tracker.controllers.TaskManager;
 import tracker.model.Epic;
-import tracker.constants.Status;
 import tracker.model.Subtask;
 import tracker.model.Task;
 
@@ -15,18 +16,18 @@ public class Main {
 
         File file = File.createTempFile("tasks", ".csv");
 
-        FileBackedTaskManager tm = new FileBackedTaskManager(file);
+        TaskManager tm = Managers.getDefault(file);
 
         // Создаем эпик с тремя подзадачами
-        tm.addEpic(new Epic(1,"переезд", "смена места жительства"));
-        tm.addSubtask(new Subtask(1,2, "сборка", "упаковать вещи", Status.IN_PROGRESS));
-        tm.addSubtask(new Subtask(1,3,"загрузка", "загрузить вещи в транспорт",
+        tm.addEpic(new Epic(1, "переезд", "смена места жительства"));
+        tm.addSubtask(new Subtask(1, 2, "сборка", "упаковать вещи", Status.IN_PROGRESS));
+        tm.addSubtask(new Subtask(1, 3, "загрузка", "загрузить вещи в транспорт",
                 Status.IN_PROGRESS));
-        tm.addSubtask(new Subtask(1,4,"выгрузка", "выгрузить вещи из транспорт",
+        tm.addSubtask(new Subtask(1, 4, "выгрузка", "выгрузить вещи из транспорт",
                 Status.NEW));
 
         // Создаем пустой эпик
-        tm.addEpic(new Epic(5,"покупки", "купить еду"));
+        tm.addEpic(new Epic(5, "покупки", "купить еду"));
 
 
         System.out.println("Просмотр");

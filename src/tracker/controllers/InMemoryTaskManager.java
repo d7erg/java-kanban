@@ -1,9 +1,9 @@
 package tracker.controllers;
 
-import tracker.model.Task;
+import tracker.constants.Status;
 import tracker.model.Epic;
 import tracker.model.Subtask;
-import tracker.constants.Status;
+import tracker.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;

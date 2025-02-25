@@ -36,8 +36,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private String toString(Task task) {
-        String s = task.getId() + "," + task.getType().toString() + "," + task.getTitle() + ","
-                + task.getStatus().toString() + "," + task.getDescription();
+        String s = task.getId() + ","
+                + task.getType().toString() + ","
+                + task.getTitle() + ","
+                + task.getStatus().toString() + ","
+                + task.getDescription();
         if (task.getType() == TaskType.SUBTASK) {
             return s + "," + ((Subtask) task).getEpicId();
         }
@@ -57,7 +60,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
         switch (type) {
             case "EPIC":
-                Epic epic  = new Epic(id, title, description);
+                Epic epic = new Epic(id, title, description);
                 epic.setStatus(status);
                 return epic;
             case "SUBTASK":
