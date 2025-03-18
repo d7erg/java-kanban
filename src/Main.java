@@ -1,41 +1,35 @@
 import tracker.constants.Status;
-import tracker.controllers.FileBackedTaskManager;
-import tracker.controllers.Managers;
-import tracker.controllers.TaskManager;
+import tracker.interfaces.TaskManager;
+import tracker.managers.FileBackedTaskManager;
+import tracker.managers.Managers;
 import tracker.model.Epic;
 import tracker.model.Subtask;
 import tracker.model.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-
-
         File file = File.createTempFile("tasks", ".csv");
-
         TaskManager tm = Managers.getDefault(file);
 
-        // Создаем эпик с тремя подзадачами
-        tm.addEpic(new Epic(1, "переезд", "смена места жительства"));
-        tm.addSubtask(new Subtask(1, 2, "сборка", "упаковать вещи", Status.IN_PROGRESS));
-        tm.addSubtask(new Subtask(1, 3, "загрузка", "загрузить вещи в транспорт",
-                Status.IN_PROGRESS));
-        tm.addSubtask(new Subtask(1, 4, "выгрузка", "выгрузить вещи из транспорт",
-                Status.NEW));
+        tm.addTask(new Task(1, "прогулка", "ходьба в парке", Status.IN_PROGRESS,
+                Duration.ofMinutes(60), LocalDateTime.of(2025, 3, 14, 10, 0)));
 
-        // Создаем пустой эпик
-        tm.addEpic(new Epic(5, "покупки", "купить еду"));
+        tm.addEpic(new Epic(2, "переезд", "смена места жительства"));
+        tm.addSubtask(new Subtask(2, 3, "сборка", "упаковать вещи", Status.IN_PROGRESS,
+                Duration.ofMinutes(90), LocalDateTime.now()));
 
 
-        System.out.println("Просмотр");
-        printAllTasks(tm);
+        System.out.println("Приоритетные задачи:");
+        tm.getPrioritizedTasks().forEach(System.out::println);
+
         System.out.println();
-
-        System.out.println("-----------------------------------------------");
-        System.out.println("Просмотр файла");
+        System.out.println("========== просмотр файла ========== ");
         System.out.println();
 
         FileBackedTaskManager load = FileBackedTaskManager.loadFromFile(file);

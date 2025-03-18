@@ -1,4 +1,4 @@
-package tracker.controllers;
+package tracker.managers;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,8 +10,11 @@ import tracker.model.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileBackedTaskManagerTest {
 
@@ -43,9 +46,11 @@ class FileBackedTaskManagerTest {
 
     @Test
     public void shouldSaveAndLoadTasks() {
-        Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS);
+        Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS,
+                Duration.ofMinutes(90), LocalDateTime.of(2025, 3, 14, 10, 0));
         Epic epic = new Epic(2,"переезд", "смена места жительства");
-        Subtask subtask = new Subtask(2,3, "сборка", "упаковать вещи", Status.IN_PROGRESS);
+        Subtask subtask = new Subtask(2,3, "сборка", "упаковать вещи", Status.IN_PROGRESS,
+                Duration.ofMinutes(90), LocalDateTime.of(2025, 3, 14, 10, 0));
         tm.addTask(task);
         tm.addEpic(epic);
         tm.addSubtask(subtask);

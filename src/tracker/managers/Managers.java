@@ -1,4 +1,7 @@
-package tracker.controllers;
+package tracker.managers;
+
+import tracker.interfaces.HistoryManager;
+import tracker.interfaces.TaskManager;
 
 import java.io.File;
 

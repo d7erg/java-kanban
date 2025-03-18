@@ -3,11 +3,15 @@ package tracker.model;
 import tracker.constants.Status;
 import tracker.constants.TaskType;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Subtask extends Task {
     private final int epicId;
 
-    public Subtask(int epicId, int id, String title, String description, Status status) {
-        super(id, title, description, status);
+    public Subtask(int epicId, int id, String title, String description, Status status, Duration duration,
+                   LocalDateTime startTime) {
+        super(id, title, description, status, duration, startTime);
         this.epicId = epicId;
     }
 
@@ -19,6 +23,9 @@ public class Subtask extends Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 
@@ -30,4 +37,5 @@ public class Subtask extends Task {
     public TaskType getType() {
         return TaskType.SUBTASK;
     }
+
 }

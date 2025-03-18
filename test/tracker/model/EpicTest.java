@@ -3,10 +3,13 @@ package tracker.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tracker.constants.Status;
-import tracker.controllers.Managers;
-import tracker.controllers.TaskManager;
+import tracker.interfaces.TaskManager;
+import tracker.managers.Managers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EpicTest {
 
@@ -18,7 +21,8 @@ class EpicTest {
     public void beforeEach() {
         tm = Managers.getDefault();
         epic = new Epic(1,"переезд", "смена места жительства");
-        subtask = new Subtask(1,2, "сборка", "упаковать вещи", Status.IN_PROGRESS);
+        subtask = new Subtask(1,2, "сборка", "упаковать вещи", Status.IN_PROGRESS,
+                Duration.ofMinutes(90), LocalDateTime.now());
         tm.addEpic(epic);
         tm.addSubtask(subtask);
     }

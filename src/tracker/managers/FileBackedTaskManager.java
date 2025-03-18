@@ -1,4 +1,4 @@
-package tracker.controllers;
+package tracker.managers;
 
 import tracker.constants.Status;
 import tracker.constants.TaskType;
@@ -9,8 +9,14 @@ import tracker.model.Task;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.stream.Stream;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
     private final File file;
 
     public FileBackedTaskManager(File file) {
@@ -19,16 +25,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void save() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            bw.write("id,type,name,status,description,epic-id\n");
-            for (Task task : getTasks()) {
-                bw.write(toString(task) + "\n");
-            }
-            for (Epic epic : getEpics()) {
-                bw.write(toString(epic) + "\n");
-            }
-            for (Subtask subtask : getSubtasks()) {
-                bw.write(toString(subtask) + "\n");
-            }
+            bw.write("id,type,name,status,description,epic-id,duration,start-time\n");
+
+            // Объединяем все задачи в один поток
+            Stream.of(getTasks(), getEpics(), getSubtasks())
+                    .flatMap(Collection::stream)
+                    .map(this::toString)
+                    .forEach(line -> {
+                        try {
+                            bw.write(line + "\n");
+                        } catch (IOException e) {
+                            throw new ManagerSaveException("Ошибка записи строки в файл.");
+                        }
+                    });
+
             bw.write("\n");
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при записи файла.");
@@ -36,16 +46,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private String toString(Task task) {
-        String s = task.getId() + ","
-                + task.getType().toString() + ","
-                + task.getTitle() + ","
-                + task.getStatus().toString() + ","
-                + task.getDescription();
+        String[] s = {Integer.toString(task.getId()),
+                task.getType().toString(),
+                task.getTitle(),
+                task.getStatus().toString(),
+                task.getDescription(),
+                String.valueOf(task.getDuration()),
+                task.getStartTime() != null ? task.getStartTime().format(FORMATTER) : "",
+        };
+        String nString = String.join(",", s);
         if (task.getType() == TaskType.SUBTASK) {
-            return s + "," + ((Subtask) task).getEpicId();
+            return nString + "," + ((Subtask) task).getEpicId();
         }
-        return s;
+        return nString;
     }
+
 
     private static Task fromString(String value) {
         String[] elements = value.split(",");
@@ -54,19 +69,26 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String title = elements[2];
         Status status = Status.valueOf(elements[3]);
         String description = elements[4];
+        Duration duration = elements[5].isEmpty() ? null : Duration.parse(elements[5]);
+        LocalDateTime startTime = elements.length > 6 && !elements[6].isEmpty() ?
+                LocalDateTime.parse(elements[6], FORMATTER) : null;
+
         Integer epicId = null;
         if (type.equals("SUBTASK")) {
-            epicId = Integer.valueOf(elements[5]);
+            epicId = Integer.valueOf(elements[7]);
         }
+
         switch (type) {
             case "EPIC":
                 Epic epic = new Epic(id, title, description);
                 epic.setStatus(status);
+                epic.setDuration(duration);
+                epic.setStartTime(startTime);
                 return epic;
             case "SUBTASK":
-                return new Subtask(epicId, id, title, description, status);
+                return new Subtask(epicId, id, title, description, status, duration, startTime);
             case "TASK":
-                return new Task(id, title, description, status);
+                return new Task(id, title, description, status, duration, startTime);
             default:
                 return null;
         }
