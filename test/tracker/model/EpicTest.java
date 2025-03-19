@@ -20,8 +20,8 @@ class EpicTest {
     @BeforeEach
     public void beforeEach() {
         tm = Managers.getDefault();
-        epic = new Epic(1,"переезд", "смена места жительства");
-        subtask = new Subtask(1,2, "сборка", "упаковать вещи", Status.IN_PROGRESS,
+        epic = new Epic(1, "переезд", "смена места жительства");
+        subtask = new Subtask(1, 2, "сборка", "упаковать вещи", Status.IN_PROGRESS,
                 Duration.ofMinutes(90), LocalDateTime.now());
         tm.addEpic(epic);
         tm.addSubtask(subtask);

@@ -23,36 +23,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getPrioritizedTasks() {
-
-        for (Task task : getTasks()) {
-            if (hasNoIntersection(task)) {
-                prioritizedTasks.add(task);
-            }
-        }
-        for (Task epic : getEpics()) {
-            for (Task subtask : getEpicSubtasks(epic.getId())) {
-                if (hasNoIntersection(subtask)) {
-                    prioritizedTasks.add(subtask);
-                }
-            }
-        }
-
-        return prioritizedTasks.stream().toList();
+        return new ArrayList<>(prioritizedTasks);
     }
 
     private boolean hasNoIntersection(Task task) {
         return prioritizedTasks.stream()
                 .noneMatch(pTask -> {
-                    // Если задача не имеет времени, не добавляем в список
                     if (pTask.getStartTime() == null || pTask.getEndTime() == null ||
                             task.getStartTime() == null || task.getEndTime() == null) {
                         return true;
                     }
-
                     // Находим максимальное из начал
                     LocalDateTime maxStart = pTask.getStartTime().isAfter(task.getStartTime())
                             ? pTask.getStartTime() : task.getStartTime();
-
                     // Находим минимальное из концов
                     LocalDateTime minEnd = pTask.getEndTime().isBefore(task.getEndTime())
                             ? pTask.getEndTime() : task.getEndTime();
@@ -169,8 +152,13 @@ public class InMemoryTaskManager implements TaskManager {
     // создание
     @Override
     public void addTask(Task task) {
-        task.setId(nextId++);
-        tasks.put(task.getId(), task);
+        if (hasNoIntersection(task)) {
+            task.setId(nextId++);
+            tasks.put(task.getId(), task);
+            prioritizedTasks.add(task);
+        } else {
+            throw new IllegalArgumentException("Пересечение по времени выполнения.");
+        }
     }
 
     @Override
@@ -182,35 +170,53 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addSubtask(Subtask subtask) {
-        subtask.setId(nextId++);
-        Epic epic = epics.get(subtask.getEpicId());
-        epic.getSubtasksIds().add(subtask.getId());
-        subtasks.put(subtask.getId(), subtask);
-        updateEpicStatus(epic.getId());
-        updateEpicTime(epic.getId());
+        if (hasNoIntersection(subtask)) {
+            subtask.setId(nextId++);
+            Epic epic = epics.get(subtask.getEpicId());
+            epic.getSubtasksIds().add(subtask.getId());
+            subtasks.put(subtask.getId(), subtask);
+            updateEpicStatus(epic.getId());
+            updateEpicTime(epic.getId());
+            prioritizedTasks.add(subtask);
+        } else {
+            throw new IllegalArgumentException("Пересечение по времени выполнения.");
+        }
     }
 
     // Обновление
     @Override
     public void updateTask(Task task) {
-        tasks.put(task.getId(), task);
+        if (tasks.containsKey(task.getId())) {
+            tasks.put(task.getId(), task);
+            prioritizedTasks.remove(getTask(task.getId()));
+            prioritizedTasks.add(task);
+        } else {
+            throw new NoSuchElementException("Задача отсутствует");
+        }
     }
 
 
     @Override
     public void updateSubtask(Subtask subtask) {
-        subtasks.put(subtask.getId(), subtask);
+        if (subtasks.containsKey(subtask.getId())) {
+            prioritizedTasks.remove(getSubtask(subtask.getId()));
+            prioritizedTasks.add(subtask);
+            subtasks.put(subtask.getId(), subtask);
 
-        Epic epic = epics.get(subtask.getEpicId());
-        updateEpicStatus(epic.getId());
-        updateEpicTime(epic.getId());
+            Epic epic = epics.get(subtask.getEpicId());
+            updateEpicStatus(epic.getId());
+            updateEpicTime(epic.getId());
+        } else {
+            throw new NoSuchElementException("Подзадача отсутствует");
+        }
     }
 
     // Удаление по идентификатору
     @Override
     public void deleteTaskById(int id) {
-        tasks.remove(id);
+        prioritizedTasks.remove(getTask(id));
         historyManager.remove(id);
+        tasks.remove(id);
     }
 
     @Override
@@ -218,8 +224,9 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(id);
         Epic epic = epics.get(id);
         for (Integer subtaskId : epic.getSubtasksIds()) {
-            subtasks.remove(subtaskId);
+            prioritizedTasks.remove(getSubtask(subtaskId));
             historyManager.remove(subtaskId);
+            subtasks.remove(subtaskId);
         }
         epics.remove(id);
     }
@@ -230,8 +237,9 @@ public class InMemoryTaskManager implements TaskManager {
         epic.getSubtasksIds().remove(id);
         updateEpicStatus(epic.getId());
         updateEpicTime(epic.getId());
-        subtasks.remove(id);
+        prioritizedTasks.remove(getSubtask(id));
         historyManager.remove(id);
+        subtasks.remove(id);
     }
 
     // Удаление задач
@@ -239,6 +247,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteTasks() {
         for (int id : tasks.keySet()) {
             historyManager.remove(id);
+            prioritizedTasks.remove(getTask(id));
         }
         tasks.clear();
     }
@@ -252,6 +261,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         for (int id : subtasks.keySet()) {
             historyManager.remove(id);
+            prioritizedTasks.remove(getSubtask(id));
         }
         subtasks.clear();
     }
@@ -266,6 +276,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         for (int id : subtasks.keySet()) {
             historyManager.remove(id);
+            prioritizedTasks.remove(getSubtask(id));
         }
         subtasks.clear();
     }

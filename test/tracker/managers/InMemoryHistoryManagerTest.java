@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import tracker.constants.Status;
 import tracker.interfaces.HistoryManager;
 import tracker.interfaces.TaskManagerTest;
+import tracker.model.Task;
 
 import java.time.Duration;
 
@@ -48,10 +49,9 @@ public class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryTaskMana
     @Test
     public void shouldAddSave20Tasks() {
         for (int i = 1; i <= 20; i++) {
-            tm.addTask(task);
-            tm.getTask(i);
+            hm.add(new Task(i, "задача", "описание"));
         }
-        assertEquals(20, tm.getHistory().size(), "Количество просмотренных задач не совпадает");
+        assertEquals(20, hm.getHistory().size(), "Количество просмотренных задач не совпадает");
     }
 
 
@@ -62,7 +62,6 @@ public class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryTaskMana
         tm.deleteTaskById(task.getId());
         assertEquals(0, tm.getHistory().size(), "Значение не совпадают");
     }
-
 
 
     @Test
@@ -77,7 +76,7 @@ public class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryTaskMana
 
         hm.add(tm.getTasks().getFirst());
         assertEquals(1, hm.getHistory().size(), "Количество задач не совпадает");
-        assertEquals(hm.getHistory().getFirst().getStatus(),hm.getHistory().getLast().getStatus(),
+        assertEquals(hm.getHistory().getFirst().getStatus(), hm.getHistory().getLast().getStatus(),
                 "Статусы должны совпадать");
     }
 

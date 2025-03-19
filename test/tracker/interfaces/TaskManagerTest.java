@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public abstract class TaskManagerTest<T extends TaskManager> {
 
     protected T tm;
+
     protected abstract T createTaskManager();
 
     protected Task task;
@@ -33,12 +34,12 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         task = new Task(1, "прогулка", "ходьба в парке", Status.IN_PROGRESS,
                 Duration.ofMinutes(60), LocalDateTime.of(2025, 3, 14, 10, 0));
         anotherTask = new Task(2, "другая задача", "другое описание", Status.IN_PROGRESS,
-                Duration.ofMinutes(60), LocalDateTime.of(2025, 3, 14, 10, 0));
+                Duration.ofMinutes(60), LocalDateTime.of(2025, 3, 15, 10, 0));
         epic = new Epic(3, "переезд", "смена места жительства");
         subtask = new Subtask(1, 2, "сборка", "упаковать вещи", Status.IN_PROGRESS,
                 Duration.ofMinutes(90), LocalDateTime.now());
-        anotherSubtask = new Subtask(1,3, "разбор", "разобрать вещи", Status.DONE,
-                Duration.ofMinutes(45), LocalDateTime.now());
+        anotherSubtask = new Subtask(1, 3, "разбор", "разобрать вещи", Status.DONE,
+                Duration.ofMinutes(45), LocalDateTime.now().plusHours(3));
         anotherEpic = new Epic(2, "название эпика", "описание эпика");
     }
 
@@ -60,10 +61,10 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void shouldUnchangedFieldsWhenAddTask() {
         tm.addTask(task);
         Task retrievedTask = tm.getTask(task.getId());
-        assertEquals(task.getId(), retrievedTask.getId(),"ID не совпадает");
-        assertEquals(task.getTitle(), retrievedTask.getTitle(),"Название не совпадает");
-        assertEquals(task.getDescription(), retrievedTask.getDescription(),"Описание не совпадает");
-        assertEquals(task.getStatus(), retrievedTask.getStatus(),"Status не совпадает");
+        assertEquals(task.getId(), retrievedTask.getId(), "ID не совпадает");
+        assertEquals(task.getTitle(), retrievedTask.getTitle(), "Название не совпадает");
+        assertEquals(task.getDescription(), retrievedTask.getDescription(), "Описание не совпадает");
+        assertEquals(task.getStatus(), retrievedTask.getStatus(), "Status не совпадает");
     }
 
     @Test

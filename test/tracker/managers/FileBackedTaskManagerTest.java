@@ -46,11 +46,11 @@ class FileBackedTaskManagerTest {
 
     @Test
     public void shouldSaveAndLoadTasks() {
-        Task task = new Task(1,"прогулка", "ходьба в парке", Status.IN_PROGRESS,
+        Task task = new Task(1, "прогулка", "ходьба в парке", Status.IN_PROGRESS,
                 Duration.ofMinutes(90), LocalDateTime.of(2025, 3, 14, 10, 0));
-        Epic epic = new Epic(2,"переезд", "смена места жительства");
-        Subtask subtask = new Subtask(2,3, "сборка", "упаковать вещи", Status.IN_PROGRESS,
-                Duration.ofMinutes(90), LocalDateTime.of(2025, 3, 14, 10, 0));
+        Epic epic = new Epic(2, "переезд", "смена места жительства");
+        Subtask subtask = new Subtask(2, 3, "сборка", "упаковать вещи", Status.IN_PROGRESS,
+                Duration.ofMinutes(90), LocalDateTime.of(2025, 3, 14, 12, 0));
         tm.addTask(task);
         tm.addEpic(epic);
         tm.addSubtask(subtask);
