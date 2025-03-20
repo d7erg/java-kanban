@@ -70,12 +70,20 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void shouldUpdateTask() {
         tm.addTask(task);
-        task.setTitle("новая прогулка");
-        task.setDescription("прогулка в другом парке");
-        tm.updateTask(task);
-        Task updatedTask = tm.getTask(task.getId());
-        assertEquals("новая прогулка", updatedTask.getTitle(), "название не совпадает");
-        assertEquals("прогулка в другом парке", updatedTask.getDescription(), "описание не совпадает");
+
+        Task newTask = new Task(task.getId(), "новая прогулка", "прогулка в другом парке",
+                Status.IN_PROGRESS,
+                Duration.ofMinutes(60),
+                LocalDateTime.of(2025, 3, 14, 12, 0));
+
+        tm.updateTask(newTask);
+
+        assertEquals("новая прогулка", tm.getTask(task.getId()).getTitle(), "название не совпадает");
+        assertEquals("прогулка в другом парке", tm.getTask(task.getId()).getDescription(),
+                "описание не совпадает");
+        assertEquals(1, tm.getTasks().size(), "Количество задач не совпадает");
+        assertEquals(1, tm.getPrioritizedTasks().size(), "Количество задач не совпадает");
+        assertTrue(tm.getPrioritizedTasks().contains(newTask));
     }
 
     @Test
@@ -160,13 +168,21 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     void shouldUpdateSubtask() {
         tm.addEpic(epic);
         tm.addSubtask(subtask);
-        subtask.setTitle("новая подзадача");
-        subtask.setDescription("описание новой подзадачи");
-        tm.updateSubtask(subtask);
-        Subtask updatedSubtask = tm.getSubtask(subtask.getId());
-        assertEquals("новая подзадача", updatedSubtask.getTitle(), "название не совпадает");
-        assertEquals("описание новой подзадачи", updatedSubtask.getDescription(),
+
+        Subtask newSubtask = new Subtask(1, 2, "новая подзадача", "описание новой подзадачи",
+                Status.IN_PROGRESS,
+                Duration.ofMinutes(90),
+                LocalDateTime.now().plusHours(2));
+
+        tm.updateSubtask(newSubtask);
+
+        assertEquals("новая подзадача", tm.getSubtask(subtask.getId()).getTitle(),
+                "название не совпадает");
+        assertEquals("описание новой подзадачи", tm.getSubtask(subtask.getId()).getDescription(),
                 "описание не совпадает");
+        assertEquals(1, tm.getSubtasks().size(), "Количество подзадач не совпадает");
+        assertEquals(1, tm.getPrioritizedTasks().size(), "Количество подзадач не совпадает");
+        assertSame(tm.getSubtask(subtask.getId()), tm.getPrioritizedTasks().getFirst(), "Подзадачи должны совпадать");
     }
 
     @Test

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tracker.constants.Status;
 import tracker.interfaces.TaskManagerTest;
+import tracker.model.Subtask;
 import tracker.model.Task;
 
 import java.time.Duration;
@@ -30,12 +31,18 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         tm.addSubtask(subtask);
         assertEquals(subtask.getStatus(), tm.getEpic(epic.getId()).getStatus(),
                 "Статус эпика должен быть как у подзадачи");
-        subtask.setStatus(Status.DONE);
-        tm.updateSubtask(subtask);
+
+        Subtask newSubtask = new Subtask(1, 2, "новая подзадача", "описание новой подзадачи",
+                Status.DONE,
+                Duration.ofMinutes(90),
+                LocalDateTime.now().plusHours(2));
+
+        tm.updateSubtask(newSubtask);
+
         assertEquals(subtask.getId(), tm.getEpicSubtasks(epic.getId()).getFirst().getId(),
                 "ID подзадач должны совпадать");
-        assertEquals(subtask.getStatus(), tm.getEpicSubtasks(epic.getId()).getFirst().getStatus(),
-                "Статусы должны совпадать");
+        assertEquals(tm.getSubtask(subtask.getId()).getStatus(),
+                tm.getEpicSubtasks(epic.getId()).getFirst().getStatus(), "Статусы должны совпадать");
         assertEquals(tm.getEpicSubtasks(epic.getId()).getFirst().getStatus(), tm.getEpic(epic.getId()).getStatus(),
                 "Статус эпика должен быть как у подзадачи");
     }
@@ -84,10 +91,10 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         assertTrue(tm.getPrioritizedTasks().containsAll(Arrays.asList(tm.getTask(3), tm.getTask(4))));
         tm.deleteTasks();
 
-        // Задача без времени начала добавлена
+        // Задача без времени начала не добавлена
         tm.addTask(new Task(5, "задача", "описание", Status.IN_PROGRESS,
                 Duration.ofMinutes(60), null));
 
-        assertTrue(tm.getPrioritizedTasks().contains(tm.getTask(5)));
+        assertFalse(tm.getPrioritizedTasks().contains(tm.getTask(5)));
     }
 }

@@ -24,7 +24,6 @@ public class Main {
         tm.addSubtask(new Subtask(2, 3, "сборка", "упаковать вещи", Status.IN_PROGRESS,
                 Duration.ofMinutes(90), LocalDateTime.now()));
 
-
         System.out.println("Приоритетные задачи:");
         tm.getPrioritizedTasks().forEach(System.out::println);
 

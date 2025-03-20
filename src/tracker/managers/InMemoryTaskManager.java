@@ -155,7 +155,9 @@ public class InMemoryTaskManager implements TaskManager {
         if (hasNoIntersection(task)) {
             task.setId(nextId++);
             tasks.put(task.getId(), task);
-            prioritizedTasks.add(task);
+            if (task.getStartTime() != null) {
+                prioritizedTasks.add(task);
+            }
         } else {
             throw new IllegalArgumentException("Пересечение по времени выполнения.");
         }
@@ -177,7 +179,9 @@ public class InMemoryTaskManager implements TaskManager {
             subtasks.put(subtask.getId(), subtask);
             updateEpicStatus(epic.getId());
             updateEpicTime(epic.getId());
-            prioritizedTasks.add(subtask);
+            if (subtask.getStartTime() != null) {
+                prioritizedTasks.add(subtask);
+            }
         } else {
             throw new IllegalArgumentException("Пересечение по времени выполнения.");
         }
@@ -187,9 +191,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getId())) {
-            tasks.put(task.getId(), task);
-            prioritizedTasks.remove(getTask(task.getId()));
-            prioritizedTasks.add(task);
+            if (hasNoIntersection(task)) {
+                prioritizedTasks.remove(getTask(task.getId()));
+                prioritizedTasks.add(task);
+                tasks.put(task.getId(), task);
+            } else {
+                throw new IllegalArgumentException("Пересечение по времени выполнения.");
+            }
         } else {
             throw new NoSuchElementException("Задача отсутствует");
         }
@@ -199,9 +207,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSubtask(Subtask subtask) {
         if (subtasks.containsKey(subtask.getId())) {
-            prioritizedTasks.remove(getSubtask(subtask.getId()));
-            prioritizedTasks.add(subtask);
-            subtasks.put(subtask.getId(), subtask);
+            if (hasNoIntersection(subtask)) {
+                prioritizedTasks.remove(getSubtask(subtask.getId()));
+                prioritizedTasks.add(subtask);
+                subtasks.put(subtask.getId(), subtask);
+            } else {
+                throw new IllegalArgumentException("Пересечение по времени выполнения.");
+            }
 
             Epic epic = epics.get(subtask.getEpicId());
             updateEpicStatus(epic.getId());
