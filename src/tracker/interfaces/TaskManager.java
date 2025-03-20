@@ -1,4 +1,4 @@
-package tracker.controllers;
+package tracker.interfaces;
 
 import tracker.model.Epic;
 import tracker.model.Subtask;
@@ -9,6 +9,8 @@ import java.util.List;
 public interface TaskManager {
 
     // Получение списка задач
+    List<Task> getPrioritizedTasks();
+
     List<Task> getHistory();
 
     List<Task> getTasks();
