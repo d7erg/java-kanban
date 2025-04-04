@@ -19,13 +19,6 @@ public interface TaskManager {
 
     List<Subtask> getSubtasks();
 
-    // Удаление задач
-    void deleteTasks();
-
-    void deleteEpics();
-
-    void deleteSubtasks();
-
     // Получение по идентификатору
     Task getTask(int id);
 
@@ -54,4 +47,14 @@ public interface TaskManager {
     void deleteEpicById(int id);
 
     void deleteSubtaskById(Integer id);
+
+    // Удаление задач
+    void deleteTasks();
+
+    void deleteEpics();
+
+    void deleteSubtasks();
+
+    // Удаление всех задач, эпиков и подзадач
+    void clearAll();
 }

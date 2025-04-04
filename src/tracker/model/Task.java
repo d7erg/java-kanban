@@ -15,6 +15,17 @@ public class Task {
     protected Duration duration;
     protected LocalDateTime startTime;
 
+    public Task(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
+    public Task(int id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+    }
+
     public Task(int id, String title, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.id = id;
         this.title = title;
@@ -24,10 +35,12 @@ public class Task {
         this.startTime = startTime;
     }
 
-    public Task(int id, String title, String description) {
-        this.id = id;
+    public Task(String title, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.title = title;
         this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     @Override
