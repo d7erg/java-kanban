@@ -24,13 +24,4 @@ public class PrioritizedHandler extends BaseHttpHandler {
         }
     }
 
-    @Override
-    protected void handlePost(HttpExchange exchange, String path) {
-        throw new UnsupportedOperationException("Метод не поддерживается");
-    }
-
-    @Override
-    protected void handleDelete(HttpExchange exchange, String path) {
-        throw new UnsupportedOperationException("Метод не поддерживается");
-    }
 }

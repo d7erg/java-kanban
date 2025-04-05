@@ -24,13 +24,19 @@ public class Main {
         tm.addSubtask(new Subtask(2, 3, "сборка", "упаковать вещи", Status.IN_PROGRESS,
                 Duration.ofMinutes(90), LocalDateTime.now()));
 
-        System.out.println("Приоритетные задачи:");
+        tm.getTask(1);
+        tm.getEpic(2);
+        tm.getSubtask(3);
+
+        System.out.println("========== история просмотра ==========");
+        tm.getHistory().forEach(System.out::println);
+        System.out.println();
+
+        System.out.println(" ========== приоритетные задачи ==========");
         tm.getPrioritizedTasks().forEach(System.out::println);
-
-        System.out.println();
-        System.out.println("========== просмотр файла ========== ");
         System.out.println();
 
+        System.out.println("========== просмотр файла ==========");
         FileBackedTaskManager load = FileBackedTaskManager.loadFromFile(file);
         printAllTasks(load);
 

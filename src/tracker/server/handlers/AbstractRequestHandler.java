@@ -4,17 +4,30 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class AbstractRequestHandler implements HttpHandler {
+    private static final Logger logger = Logger.getLogger(AbstractRequestHandler.class.getName());
 
-    protected abstract void handleGet(HttpExchange exchange, String path) throws IOException;
+    protected void handleGet(HttpExchange exchange, String path) throws IOException {
+        sendMethodNotAllowed(exchange);
+    }
 
-    protected abstract void handlePost(HttpExchange exchange, String path) throws IOException;
+    protected void handlePost(HttpExchange exchange, String path) throws IOException {
+        sendMethodNotAllowed(exchange);
+    }
 
-    protected abstract void handleDelete(HttpExchange exchange, String path) throws IOException;
+    protected void handleDelete(HttpExchange exchange, String path) throws IOException {
+        sendMethodNotAllowed(exchange);
+    }
+
+    private void sendMethodNotAllowed(HttpExchange exchange) throws IOException {
+        exchange.sendResponseHeaders(405, 0);
+    }
 
     @Override
-    public void handle(HttpExchange exchange) {
+    public void handle(HttpExchange exchange) throws IOException {
         try {
             String requestMethod = exchange.getRequestMethod().toUpperCase();
             String path = exchange.getRequestURI().getPath();
@@ -26,9 +39,9 @@ public abstract class AbstractRequestHandler implements HttpHandler {
                 default -> exchange.sendResponseHeaders(405, 0);
             }
         } catch (IOException e) {
-            System.err.println("Произошла ошибка: " + e.getMessage());
+            logger.log(Level.SEVERE, "Ошибка при обработке HTTP запроса", e);
+            throw e;
         }
-
     }
 
 }

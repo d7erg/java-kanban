@@ -23,15 +23,4 @@ public class HistoryHandler extends BaseHttpHandler {
             sendInternalError(exchange);
         }
     }
-
-
-    @Override
-    protected void handlePost(HttpExchange exchange, String path) {
-        throw new UnsupportedOperationException("Метод не поддерживается");
-    }
-
-    @Override
-    protected void handleDelete(HttpExchange exchange, String path) {
-        throw new UnsupportedOperationException("Метод не поддерживается");
-    }
 }
