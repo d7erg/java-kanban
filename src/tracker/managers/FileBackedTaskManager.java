@@ -25,7 +25,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void save() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            bw.write("id,type,name,status,description,epic-id,duration,start-time\n");
+            bw.write("id,type,name,status,description,duration,start-time,epic-id\n");
 
             // Объединяем все задачи в один поток
             Stream.of(getTasks(), getEpics(), getSubtasks())
