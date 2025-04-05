@@ -40,6 +40,11 @@ public class InMemoryHistoryManager implements HistoryManager {
         return tasks;
     }
 
+    @Override
+    public void clear() {
+        this.history.clear();
+    }
+
     private void linkLast(Task task) {
         if (history.containsKey(task.getId())) {
             removeNode(history.get(task.getId()));

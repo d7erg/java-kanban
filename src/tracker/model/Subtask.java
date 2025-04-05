@@ -9,6 +9,12 @@ import java.time.LocalDateTime;
 public class Subtask extends Task {
     private final int epicId;
 
+    public Subtask(int epicId, String title, String description, Status status, Duration duration,
+                   LocalDateTime startTime) {
+        super(title, description, status, duration, startTime);
+        this.epicId = epicId;
+    }
+
     public Subtask(int epicId, int id, String title, String description, Status status, Duration duration,
                    LocalDateTime startTime) {
         super(id, title, description, status, duration, startTime);

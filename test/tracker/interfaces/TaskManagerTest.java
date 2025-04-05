@@ -98,7 +98,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void shouldDeleteTaskByID() {
         tm.addTask(task);
         tm.deleteTaskById(task.getId());
-        assertNull(tm.getTask(task.getId()), "задача не удалена");
+        assertEquals(0, tm.getTasks().size(), "Значения не совпадают");
     }
 
 
@@ -129,7 +129,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     void shouldDeleteEpicById() {
         tm.addEpic(epic);
         tm.deleteEpicById(epic.getId());
-        assertNull(tm.getEpic(epic.getId()), "эпик не удалён");
+        assertEquals(0, tm.getEpics().size(), "Количество эпиков не совпадает");
     }
 
     @Test
@@ -145,7 +145,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         tm.addEpic(epic);
         tm.addSubtask(subtask);
         tm.deleteEpicById(epic.getId());
-        assertNull(tm.getEpic(epic.getId()), "эпик не удалён");
+        assertEquals(0, tm.getEpics().size(), "Количество эпиков не совпадает");
         assertEquals(0, tm.getSubtasks().size(), "Подзадача не удалена");
     }
 
@@ -190,7 +190,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         tm.addEpic(epic);
         tm.addSubtask(subtask);
         tm.deleteSubtaskById(subtask.getId());
-        assertNull(tm.getSubtask(subtask.getId()), "подзадача не удалена");
+        assertEquals(0, tm.getSubtasks().size(), "Количество подзадач не совпадает");
     }
 
     @Test
